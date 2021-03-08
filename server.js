@@ -4,6 +4,7 @@ const { MovieDb } = require("moviedb-promise");
 
 const movieLatest = require("./controllers/movieLatest.js");
 const movieList = require("./controllers/movieList.js");
+const genreList = require("./controllers/genreList.js");
 
 const moviedb = new MovieDb(process.env.TMDB_API_KEY);
 
@@ -21,6 +22,10 @@ app.get("/movie/latest", async (req, res) => {
 
 app.get("/movielist/:sorted", async (req, res) => {
 	movieList.handleMovieList(req, res, moviedb);
+});
+
+app.get("/genrelist", async (req, res) => {
+	genreList.handleGenreList(req, res, moviedb);
 });
 
 app.listen(process.env.PORT || 3001, () => {
