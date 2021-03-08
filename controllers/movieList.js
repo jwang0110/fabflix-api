@@ -33,7 +33,7 @@ const getMovie = (movie) => {
 	return {
 		id: movie.id,
 		title: movie.title,
-		date: movie.date,
+		date: movie.release_date,
 		rating: movie.vote_average,
 	};
 };
