@@ -81,18 +81,19 @@ const handleMovieList = async (req, res, moviedb) => {
 		}
 
 		const filteredMovies = await Promise.all(
-			movies.results.map(async (m) => {
-				const movie_id = m.id;
-				const genre_ids = m.genre_ids;
+			movies.results.map(async (movie) => {
+				const movie_id = movie.id;
 				const credits = await moviedb.movieCredits(movie_id);
-				const movie = getMovie(m);
-				const images = getImages(m);
+				const images = getImages(movie);
 				const stars = getStars(credits);
 				const director = getDirector(credits);
 
 				return {
-					movie,
-					genre_ids,
+					id: movie_id,
+					title: movie.title,
+					date: movie.release_date,
+					rating: movie.vote_average,
+					genre_ids: movie.genre_ids,
 					stars,
 					director,
 					images,
