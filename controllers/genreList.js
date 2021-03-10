@@ -1,8 +1,8 @@
-const handleGenreList = async (req, res, moviedb) => {
-	const params = {
-		language: "en-US",
-	};
+const params = {
+	language: "en-US",
+};
 
+const handleGenreList = async (req, res, moviedb) => {
 	try {
 		const response = await moviedb.genreMovieList(params);
 		res.json(response);

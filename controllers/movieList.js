@@ -38,13 +38,6 @@ const getMovie = (movie) => {
 	};
 };
 
-const getImages = (movie) => {
-	return {
-		backdrop_path: movie.backdrop_path,
-		poster_path: movie.poster_path,
-	};
-};
-
 const getStars = (credits) => {
 	const stars = credits.cast.map((star) => {
 		return {
@@ -84,7 +77,6 @@ const handleMovieList = async (req, res, moviedb) => {
 			movies.results.map(async (movie) => {
 				const movie_id = movie.id;
 				const credits = await moviedb.movieCredits(movie_id);
-				const images = getImages(movie);
 				const stars = getStars(credits);
 				const director = getDirector(credits);
 
@@ -94,9 +86,10 @@ const handleMovieList = async (req, res, moviedb) => {
 					date: movie.release_date,
 					rating: movie.vote_average,
 					genre_ids: movie.genre_ids,
+					backdrop_path: movie.backdrop_path,
+					poster_path: movie.poster_path,
 					stars,
 					director,
-					images,
 				};
 			})
 		);

@@ -4,6 +4,7 @@ const { MovieDb } = require("moviedb-promise");
 
 const configuration = require("./controllers/configuration.js");
 const imageUrl = require("./controllers/imageUrl.js");
+const movie = require("./controllers/movie.js");
 const movieLatest = require("./controllers/movieLatest.js");
 const movieList = require("./controllers/movieList.js");
 const genreList = require("./controllers/genreList.js");
@@ -26,7 +27,11 @@ app.get("/imageUrl", (req, res) => {
 	imageUrl.handleImageUrl(req, res, moviedb);
 });
 
-app.get("/movie/latest", async (req, res) => {
+app.get("/movie/:movie_id", async (req, res) => {
+	movie.handleMovie(req, res, moviedb);
+});
+
+app.get("/latest", async (req, res) => {
 	movieLatest.handleMovieLatest(req, res, moviedb);
 });
 
