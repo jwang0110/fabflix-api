@@ -39,12 +39,14 @@ const getMovie = (movie) => {
 };
 
 const getStars = (credits) => {
-	const stars = credits.cast.map((star) => {
-		return {
-			id: star.id,
-			name: star.name,
-		};
-	});
+	const stars = credits.cast
+		.filter((star) => star.known_for_department === "Acting")
+		.map((star) => {
+			return {
+				id: star.id,
+				name: star.name,
+			};
+		});
 
 	return stars;
 };
