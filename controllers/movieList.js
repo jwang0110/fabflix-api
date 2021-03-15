@@ -2,11 +2,13 @@ const params = {
 	language: "en-US",
 };
 
-const fetchMovies = async (moviedb, sorted) => {
+const fetchMovies = async (req, moviedb) => {
+	const { list } = req.params;
+
 	let response = null;
 
 	try {
-		switch (sorted) {
+		switch (list) {
 			case "now_playing":
 				response = await moviedb.movieNowPlaying(params);
 				break;
@@ -19,6 +21,9 @@ const fetchMovies = async (moviedb, sorted) => {
 			case "upcoming":
 				response = await moviedb.upcomingMovies(params);
 				break;
+			case "discover":
+				response = await moviedb.discoverMovie();
+				break;
 			default:
 				response = null;
 		}
@@ -29,76 +34,34 @@ const fetchMovies = async (moviedb, sorted) => {
 	}
 };
 
-const getMovie = (movie) => {
-	return {
-		id: movie.id,
-		title: movie.title,
-		date: movie.release_date,
-		rating: movie.vote_average,
-	};
-};
+const fetchMovie = async (moviedb, movie) => {
+	try {
+		const credits = await moviedb.movieCredits(movie.id);
 
-const getStars = (credits) => {
-	const stars = credits.cast
-		.filter((star) => star.known_for_department === "Acting")
-		.map((star) => {
-			return {
-				id: star.id,
-				name: star.name,
-			};
-		});
-
-	return stars;
-};
-
-const getDirector = (credits) => {
-	const director = credits.crew.find((person) => person.job === "Director");
-
-	if (!director) {
-		return null;
-	} else {
 		return {
-			id: director.id,
-			name: director.name,
+			...movie,
+			credits: credits,
 		};
+	} catch (e) {
+		return { ...movie, credits: null };
 	}
 };
 
 const handleMovieList = async (req, res, moviedb) => {
-	const { sorted } = req.params;
-
 	try {
-		const movies = await fetchMovies(moviedb, sorted);
+		const movies = await fetchMovies(req, moviedb);
 
 		if (!movies) {
-			res.status(404).json("Page Not Found");
+			res.status(404).json("Unable to fetch movies");
 			return;
 		}
 
 		const filteredMovies = await Promise.all(
-			movies.results.map(async (movie) => {
-				const movie_id = movie.id;
-				const credits = await moviedb.movieCredits(movie_id);
-				const stars = getStars(credits);
-				const director = getDirector(credits);
-
-				return {
-					id: movie_id,
-					title: movie.title,
-					date: movie.release_date,
-					rating: movie.vote_average,
-					genre_ids: movie.genre_ids,
-					backdrop_path: movie.backdrop_path,
-					poster_path: movie.poster_path,
-					stars,
-					director,
-				};
-			})
+			movies.results.map(async (movie) => fetchMovie(moviedb, movie))
 		);
 
 		res.json(filteredMovies);
 	} catch (e) {
-		console.log(e);
 		res.status(404).json(e);
 	}
 };

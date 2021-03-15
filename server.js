@@ -40,7 +40,7 @@ app.get("/latest", async (req, res) => {
 	movieLatest.handleMovieLatest(req, res, moviedb);
 });
 
-app.get("/movielist/:sorted", async (req, res) => {
+app.get("/movielist/:list", async (req, res) => {
 	movieList.handleMovieList(req, res, moviedb);
 });
 
