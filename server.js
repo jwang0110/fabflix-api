@@ -4,10 +4,12 @@ const { MovieDb } = require("moviedb-promise");
 
 const configuration = require("./controllers/configuration.js");
 const imageUrl = require("./controllers/imageUrl.js");
-const person = require("./controllers/person");
+const person = require("./controllers/person.js");
+const personSearch = require("./controllers/personSearch.js");
 const movie = require("./controllers/movie.js");
 const movieLatest = require("./controllers/movieLatest.js");
 const movieList = require("./controllers/movieList.js");
+const movieSearch = require("./controllers/movieSearch.js");
 const genreList = require("./controllers/genreList.js");
 
 const moviedb = new MovieDb(process.env.TMDB_API_KEY);
@@ -28,6 +30,12 @@ app.get("/imageUrl", (req, res) => {
 	imageUrl.handleImageUrl(req, res, moviedb);
 });
 
+app.get("/genrelist", async (req, res) => {
+	genreList.handleGenreList(req, res, moviedb);
+});
+
+//Movie or Person
+
 app.get("/person/:person_id", async (req, res) => {
 	person.handlePerson(req, res, moviedb);
 });
@@ -40,13 +48,25 @@ app.get("/latest", async (req, res) => {
 	movieLatest.handleMovieLatest(req, res, moviedb);
 });
 
-app.get("/movielist/:list", async (req, res) => {
+app.get("/movielist", async (req, res) => {
 	movieList.handleMovieList(req, res, moviedb);
 });
 
-app.get("/genrelist", async (req, res) => {
-	genreList.handleGenreList(req, res, moviedb);
+app.get("/movielist/:id", async (req, res) => {
+	movieList.handleMovieList(req, res, moviedb);
 });
+
+//Search
+
+app.get("/movieSearch", async (req, res) => {
+	movieSearch.handleMovieSearch(req, res, moviedb);
+});
+
+app.get("/personSearch", async (req, res) => {
+	personSearch.handlePersonSearch(req, res, moviedb);
+});
+
+//Listening
 
 app.listen(process.env.PORT || 3001, () => {
 	console.log("fabflix-api is running");

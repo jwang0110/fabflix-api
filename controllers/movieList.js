@@ -1,16 +1,21 @@
-const params = {
-	language: "en-US",
-};
-
 const fetchMovies = async (req, moviedb) => {
-	const { list } = req.params;
+	const { id } = req.params;
+	const { query, page, sort, order } = req.query;
+
+	const params = {
+		language: "en-US",
+		page: page ? page : 1,
+	};
 
 	let response = null;
 
 	try {
-		switch (list) {
+		switch (id) {
 			case "now_playing":
 				response = await moviedb.movieNowPlaying(params);
+				break;
+			case "upcoming":
+				response = await moviedb.upcomingMovies(params);
 				break;
 			case "popular":
 				response = await moviedb.moviePopular(params);
@@ -18,14 +23,21 @@ const fetchMovies = async (req, moviedb) => {
 			case "top_rated":
 				response = await moviedb.movieTopRated(params);
 				break;
-			case "upcoming":
-				response = await moviedb.upcomingMovies(params);
-				break;
-			case "discover":
-				response = await moviedb.discoverMovie();
+
+			case "browse":
+				response = await moviedb.discoverMovie(params);
 				break;
 			default:
-				response = null;
+				if (query) {
+					response = await moviedb.searchMovie({ ...params, query });
+				} else if (sort && order) {
+					response = await moviedb.discoverMovie({
+						...params,
+						sort_by: `${sort}.${order}`,
+					});
+				} else {
+					response = null;
+				}
 		}
 
 		return response;
