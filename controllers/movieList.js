@@ -1,6 +1,6 @@
 const fetchMovies = async (req, moviedb) => {
 	const { id } = req.params;
-	const { query, page, sort, order } = req.query;
+	const { query, page, sort, order, with_genres } = req.query;
 
 	const params = {
 		language: "en-US",
@@ -30,13 +30,11 @@ const fetchMovies = async (req, moviedb) => {
 			default:
 				if (query) {
 					response = await moviedb.searchMovie({ ...params, query });
-				} else if (sort && order) {
-					response = await moviedb.discoverMovie({
-						...params,
-						sort_by: `${sort}.${order}`,
-					});
 				} else {
-					response = null;
+					if (with_genres) params["with_genres"] = with_genres;
+					if (sort && order) params["sort_by"] = `${sort}.${order}`;
+
+					response = await moviedb.discoverMovie(params);
 				}
 		}
 

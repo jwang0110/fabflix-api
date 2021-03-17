@@ -3,7 +3,6 @@ const cors = require("cors");
 const { MovieDb } = require("moviedb-promise");
 
 const configuration = require("./controllers/configuration.js");
-const imageUrl = require("./controllers/imageUrl.js");
 const person = require("./controllers/person.js");
 const personSearch = require("./controllers/personSearch.js");
 const movie = require("./controllers/movie.js");
@@ -24,10 +23,6 @@ app.get("/", (req, res) => {
 
 app.get("/configuration", (req, res) => {
 	configuration.handleConfiguration(req, res, moviedb);
-});
-
-app.get("/imageUrl", (req, res) => {
-	imageUrl.handleImageUrl(req, res, moviedb);
 });
 
 app.get("/genrelist", async (req, res) => {
