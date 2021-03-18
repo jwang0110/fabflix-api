@@ -1,6 +1,6 @@
 const fetchMovies = async (req, moviedb) => {
 	const { id } = req.params;
-	const { query, page, sort, order, with_genres } = req.query;
+	const { query, page, sort_by, with_genres } = req.query;
 
 	const params = {
 		language: "en-US",
@@ -23,16 +23,12 @@ const fetchMovies = async (req, moviedb) => {
 			case "top_rated":
 				response = await moviedb.movieTopRated(params);
 				break;
-
-			case "browse":
-				response = await moviedb.discoverMovie(params);
-				break;
 			default:
 				if (query) {
 					response = await moviedb.searchMovie({ ...params, query });
 				} else {
 					if (with_genres) params["with_genres"] = with_genres;
-					if (sort && order) params["sort_by"] = `${sort}.${order}`;
+					if (sort_by) params["sort_by"] = sort_by;
 
 					response = await moviedb.discoverMovie(params);
 				}
@@ -70,7 +66,7 @@ const handleMovieList = async (req, res, moviedb) => {
 			movies.results.map(async (movie) => fetchMovie(moviedb, movie))
 		);
 
-		res.json(filteredMovies);
+		res.json({ ...movies, results: filteredMovies });
 	} catch (e) {
 		res.status(404).json(e);
 	}
