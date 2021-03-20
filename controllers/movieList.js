@@ -77,7 +77,6 @@ const handleMovieRandom = async (req, res, moviedb) => {
 		const movies = await fetchMovies(req, moviedb);
 
 		if (!movies) {
-			console.log("return");
 			res.status(404).json("Unable to fetch movies");
 			return;
 		}
