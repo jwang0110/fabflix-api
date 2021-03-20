@@ -72,6 +72,26 @@ const handleMovieList = async (req, res, moviedb) => {
 	}
 };
 
+const handleMovieRandom = async (req, res, moviedb) => {
+	try {
+		const movies = await fetchMovies(req, moviedb);
+
+		if (!movies) {
+			console.log("return");
+			res.status(404).json("Unable to fetch movies");
+			return;
+		}
+
+		const randomIndex = Math.floor(Math.random() * movies.results.length);
+		const randomMovie = await fetchMovie(moviedb, movies.results[randomIndex]);
+
+		res.json(randomMovie);
+	} catch (e) {
+		res.status(404).json(e);
+	}
+};
+
 module.exports = {
 	handleMovieList,
+	handleMovieRandom,
 };

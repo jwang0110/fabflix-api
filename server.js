@@ -51,6 +51,14 @@ app.get("/movielist/:id", async (req, res) => {
 	movieList.handleMovieList(req, res, moviedb);
 });
 
+app.get("/movielist/:id", async (req, res) => {
+	movieList.handleMovieList(req, res, moviedb);
+});
+
+app.get("/random/:id", async (req, res) => {
+	movieList.handleMovieRandom(req, res, moviedb);
+});
+
 //Search
 
 app.get("/movieSearch", async (req, res) => {
