@@ -10,6 +10,7 @@ const movieLatest = require("./controllers/movieLatest.js");
 const movieList = require("./controllers/movieList.js");
 const movieSearch = require("./controllers/movieSearch.js");
 const genreList = require("./controllers/genreList.js");
+const signup = require("./controllers/signup");
 
 const moviedb = new MovieDb(process.env.TMDB_API_KEY);
 
@@ -67,6 +68,10 @@ app.get("/movieSearch", async (req, res) => {
 
 app.get("/personSearch", async (req, res) => {
 	personSearch.handlePersonSearch(req, res, moviedb);
+});
+
+app.post("/signup", async (req, res) => {
+	signup.handleSignUp(req, res);
 });
 
 //Listening
