@@ -3,7 +3,7 @@ const handleConfiguration = async (req, res, moviedb) => {
 		const response = await moviedb.configuration();
 		res.json(response);
 	} catch (e) {
-		res.status(404).json(e);
+		res.status(400).json(e);
 	}
 };
 

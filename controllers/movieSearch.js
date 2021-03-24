@@ -16,7 +16,7 @@ const handleMovieSearch = async (req, res, moviedb) => {
 		const movies = await moviedb.searchMovie({ query: "name" });
 
 		if (!movies) {
-			res.status(404).json("Unable to fetch movies");
+			res.status(400).json("Unable to fetch movies");
 			return;
 		}
 
@@ -26,7 +26,7 @@ const handleMovieSearch = async (req, res, moviedb) => {
 
 		res.json(movies);
 	} catch (e) {
-		res.status(404).json(e);
+		res.status(400).json(e);
 	}
 };
 

@@ -8,7 +8,7 @@ const handlePerson = async (req, res, moviedb) => {
 		});
 		res.json(response);
 	} catch (e) {
-		res.status(404).json(e);
+		res.status(400).json(e);
 	}
 };
 

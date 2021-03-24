@@ -4,7 +4,6 @@ const { MovieDb } = require("moviedb-promise");
 
 const configuration = require("./controllers/configuration.js");
 const person = require("./controllers/person.js");
-const personSearch = require("./controllers/personSearch.js");
 const movie = require("./controllers/movie.js");
 const movieLatest = require("./controllers/movieLatest.js");
 const movieList = require("./controllers/movieList.js");
@@ -20,6 +19,12 @@ app.use(cors());
 
 app.get("/", (req, res) => {
 	res.send("fabflix-api is working");
+});
+
+// General
+
+app.post("/signup", async (req, res) => {
+	signup.handleSignUp(req, res);
 });
 
 app.get("/configuration", (req, res) => {
@@ -64,14 +69,6 @@ app.get("/random/:id", async (req, res) => {
 
 app.get("/movieSearch", async (req, res) => {
 	movieSearch.handleMovieSearch(req, res, moviedb);
-});
-
-app.get("/personSearch", async (req, res) => {
-	personSearch.handlePersonSearch(req, res, moviedb);
-});
-
-app.post("/signup", async (req, res) => {
-	signup.handleSignUp(req, res);
 });
 
 //Listening

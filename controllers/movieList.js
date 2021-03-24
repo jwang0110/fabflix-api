@@ -58,7 +58,7 @@ const handleMovieList = async (req, res, moviedb) => {
 		const movies = await fetchMovies(req, moviedb);
 
 		if (!movies) {
-			res.status(404).json("Unable to fetch movies");
+			res.status(400).json("Unable to fetch movies");
 			return;
 		}
 
@@ -68,7 +68,7 @@ const handleMovieList = async (req, res, moviedb) => {
 
 		res.json({ ...movies, results: filteredMovies });
 	} catch (e) {
-		res.status(404).json(e);
+		res.status(400).json(e);
 	}
 };
 
@@ -77,7 +77,7 @@ const handleMovieRandom = async (req, res, moviedb) => {
 		const movies = await fetchMovies(req, moviedb);
 
 		if (!movies) {
-			res.status(404).json("Unable to fetch movies");
+			res.status(400).json("Unable to fetch movies");
 			return;
 		}
 
@@ -86,7 +86,7 @@ const handleMovieRandom = async (req, res, moviedb) => {
 
 		res.json(randomMovie);
 	} catch (e) {
-		res.status(404).json(e);
+		res.status(400).json(e);
 	}
 };
 
