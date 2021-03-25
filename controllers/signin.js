@@ -44,13 +44,13 @@ const handleSignIn = async (req, res) => {
 			} else {
 				return res.status(400).json({
 					status: "failed",
-					error: "Invalid user credentials",
+					message: "Invalid user credentials",
 				});
 			}
 		} else {
 			return res.status(400).json({
 				status: "failed",
-				error: "Invalid user credentials",
+				message: "Invalid user credentials",
 			});
 		}
 	} catch (e) {
