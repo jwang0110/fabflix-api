@@ -35,9 +35,11 @@ const handleSignIn = async (req, res) => {
 			if (email === dbEmail && password === dbPassword) {
 				return res.json({
 					status: "succeeded",
-					name,
-					email: dbEmail,
-					joined,
+					user: {
+						name,
+						email: dbEmail,
+						joined,
+					},
 				});
 			} else {
 				return res.status(400).json({
