@@ -2,8 +2,9 @@ const { Client } = require("pg");
 
 const handleSignUp = async (req, res) => {
 	const { name, email, password } = req.body;
-	if (!email || !password) {
-		return res.status(400).json("invalid login credentials");
+
+	if (!name || !email || !password) {
+		return res.status(400).json("Missing required information");
 	}
 
 	try {
