@@ -42,16 +42,10 @@ const handleSignIn = async (req, res) => {
 					joined,
 				};
 			} else {
-				jsonObject = {
-					status: "failed",
-					message: "Invalid user credentials",
-				};
+				return res.status(400).json("Invalid user credentials");
 			}
 		} else {
-			jsonObject = {
-				status: "failed",
-				message: "Invalid user credentials",
-			};
+			return res.status(400).json("Invalid user credentials");
 		}
 
 		res.json(jsonObject);
