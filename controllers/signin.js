@@ -24,8 +24,6 @@ const handleSignIn = async (req, res) => {
 
 		await client.end();
 
-		let jsonObject = null;
-
 		if (response?.rows?.[0]) {
 			const {
 				name,
@@ -35,20 +33,24 @@ const handleSignIn = async (req, res) => {
 			} = response.rows[0];
 
 			if (email === dbEmail && password === dbPassword) {
-				jsonObject = {
+				return res.json({
 					status: "succeeded",
 					name,
 					email: dbEmail,
 					joined,
-				};
+				});
 			} else {
-				return res.status(400).json("Invalid user credentials");
+				return res.status(400).json({
+					status: "failed",
+					error: "Invalid user credentials",
+				});
 			}
 		} else {
-			return res.status(400).json("Invalid user credentials");
+			return res.status(400).json({
+				status: "failed",
+				error: "Invalid user credentials",
+			});
 		}
-
-		res.json(jsonObject);
 	} catch (e) {
 		res.status(400).json(e);
 	}
