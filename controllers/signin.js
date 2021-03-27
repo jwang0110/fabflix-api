@@ -26,6 +26,7 @@ const handleSignIn = async (req, res) => {
 
 		if (response?.rows?.[0]) {
 			const {
+				id,
 				name,
 				email: dbEmail,
 				password: dbPassword,
@@ -36,6 +37,7 @@ const handleSignIn = async (req, res) => {
 				return res.json({
 					status: "succeeded",
 					user: {
+						id,
 						name,
 						email: dbEmail,
 						joined,

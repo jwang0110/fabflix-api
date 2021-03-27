@@ -33,8 +33,12 @@ app.post("/signin", async (req, res) => {
 	signin.handleSignIn(req, res);
 });
 
-app.post("/bookmark", async (req, res) => {
-	bookmark.handleBookmark(req, res);
+app.post("/bookmark/add", async (req, res) => {
+	bookmark.handleAddBookmark(req, res);
+});
+
+app.get("/bookmark/fetch", async (req, res) => {
+	bookmark.handleFetchBookmark(req, res);
 });
 
 app.get("/configuration", (req, res) => {
