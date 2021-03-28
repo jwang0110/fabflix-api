@@ -26,7 +26,7 @@ const handleSignIn = async (req, res) => {
 
 		if (response?.rows?.[0]) {
 			const {
-				userId: id,
+				userid: id,
 				name,
 				email: dbEmail,
 				password: dbPassword,
