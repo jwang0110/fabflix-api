@@ -1,6 +1,6 @@
 const { Client } = require("pg");
 
-const handleFetchBookmark = async (req, res) => {
+const handleFetchBookmarks = async (req, res) => {
 	const { userId } = req.body;
 
 	if (!userId) {
@@ -60,5 +60,5 @@ const handleAddBookmark = async (req, res) => {
 
 module.exports = {
 	handleAddBookmark,
-	handleFetchBookmark,
+	handleFetchBookmarks,
 };

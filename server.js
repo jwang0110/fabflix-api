@@ -11,7 +11,7 @@ const movieSearch = require("./controllers/movieSearch.js");
 const genreList = require("./controllers/genreList.js");
 const signup = require("./controllers/signup");
 const signin = require("./controllers/signin");
-const bookmark = require("./controllers/bookmark");
+const bookmarks = require("./controllers/bookmarks");
 
 const moviedb = new MovieDb(process.env.TMDB_API_KEY);
 
@@ -33,12 +33,12 @@ app.post("/signin", async (req, res) => {
 	signin.handleSignIn(req, res);
 });
 
-app.post("/bookmark/add", async (req, res) => {
-	bookmark.handleAddBookmark(req, res);
+app.post("/bookmarks/add", async (req, res) => {
+	bookmarks.handleAddBookmark(req, res);
 });
 
-app.get("/bookmark/fetch", async (req, res) => {
-	bookmark.handleFetchBookmark(req, res);
+app.get("/bookmarks/fetch", async (req, res) => {
+	bookmarks.handleFetchBookmarks(req, res);
 });
 
 app.get("/configuration", (req, res) => {
