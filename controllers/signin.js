@@ -18,7 +18,7 @@ const handleSignIn = async (req, res) => {
 		client.connect();
 
 		const response = await client.query(
-			"SELECT * FROM users JOIN login ON users.email = login.email WHERE users.email=$1",
+			"SELECT * FROM users JOIN logins ON users.email = logins.email WHERE users.email = $1;",
 			[email]
 		);
 
@@ -26,7 +26,7 @@ const handleSignIn = async (req, res) => {
 
 		if (response?.rows?.[0]) {
 			const {
-				id,
+				userId: id,
 				name,
 				email: dbEmail,
 				password: dbPassword,

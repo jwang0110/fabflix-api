@@ -18,7 +18,7 @@ const handleFetchBookmarks = async (req, res) => {
 		client.connect();
 
 		const response = await client.query(
-			"SELECT * FROM bookmarks WHERE userId = $1",
+			"SELECT * FROM bookmarks WHERE userId = $1;",
 			[userId]
 		);
 		await client.end();
@@ -47,7 +47,7 @@ const handleAddBookmark = async (req, res) => {
 		client.connect();
 
 		const response = await client.query(
-			"INSERT INTO bookmarks (userId, movieId, bookmarkTime) VALUES ($1, $2, $3)",
+			"INSERT INTO bookmarks (userId, movieId, bookmarkTime) VALUES ($1, $2, $3);",
 			[userId, movieId, new Date()]
 		);
 		await client.end();

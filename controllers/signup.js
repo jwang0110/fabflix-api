@@ -17,7 +17,7 @@ const handleSignUp = async (req, res) => {
 
 		client.connect();
 
-		const response = await client.query("CALL add_user($1, $2, $3, $4);", [
+		const response = await client.query("CALL addUser($1, $2, $3, $4);", [
 			name,
 			email,
 			password,
