@@ -38,11 +38,11 @@ app.post("/bookmarks/add", async (req, res) => {
 	bookmarks.handleAddBookmark(req, res);
 });
 
-app.get("/bookmarks/fetch", async (req, res) => {
+app.post("/bookmarks/fetch", async (req, res) => {
 	bookmarks.handleFetchBookmarks(req, res);
 });
 
-app.get("/bookmarks/movies", async (req, res) => {
+app.post("/bookmarks/movies", async (req, res) => {
 	movieBookmarks.handleMovieBookmarks(req, res, moviedb);
 });
 
