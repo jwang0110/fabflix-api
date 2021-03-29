@@ -1,4 +1,11 @@
-const { Client } = require("pg");
+const { Pool } = require("pg");
+
+const pool = new Pool({
+	connectionString: process.env.DATABASE_URL,
+	ssl: {
+		rejectUnauthorized: false,
+	},
+});
 
 const handleFetchBookmarks = async (req, res) => {
 	const { userId } = req.body;
@@ -8,20 +15,10 @@ const handleFetchBookmarks = async (req, res) => {
 	}
 
 	try {
-		const client = new Client({
-			connectionString: process.env.DATABASE_URL,
-			ssl: {
-				rejectUnauthorized: false,
-			},
-		});
-
-		client.connect();
-
-		const response = await client.query(
+		const response = await pool.query(
 			"SELECT * FROM bookmarks WHERE userId = $1;",
 			[userId]
 		);
-		await client.end();
 
 		res.json(response);
 	} catch (e) {
@@ -37,20 +34,15 @@ const handleAddBookmark = async (req, res) => {
 	}
 
 	try {
-		const client = new Client({
-			connectionString: process.env.DATABASE_URL,
-			ssl: {
-				rejectUnauthorized: false,
-			},
-		});
-
-		client.connect();
-
-		const response = await client.query(
+		await pool.query(
 			"INSERT INTO bookmarks (userId, movieId, bookmarkTime) VALUES ($1, $2, $3);",
 			[userId, movieId, new Date()]
 		);
-		await client.end();
+
+		const response = await pool.query(
+			"SELECT * FROM bookmarks WHERE userId = $1;",
+			[userId]
+		);
 
 		res.json(response);
 	} catch (e) {

@@ -7,6 +7,7 @@ const person = require("./controllers/person.js");
 const movie = require("./controllers/movie.js");
 const movieLatest = require("./controllers/movieLatest.js");
 const movieList = require("./controllers/movieList.js");
+const movieBookmarks = require("./controllers/movieBookmarks");
 const movieSearch = require("./controllers/movieSearch.js");
 const genreList = require("./controllers/genreList.js");
 const signup = require("./controllers/signup");
@@ -39,6 +40,10 @@ app.post("/bookmarks/add", async (req, res) => {
 
 app.get("/bookmarks/fetch", async (req, res) => {
 	bookmarks.handleFetchBookmarks(req, res);
+});
+
+app.get("/bookmarks/movies", async (req, res) => {
+	movieBookmarks.handleMovieBookmarks(req, res, moviedb);
 });
 
 app.get("/configuration", (req, res) => {
