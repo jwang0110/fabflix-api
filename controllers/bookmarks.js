@@ -20,7 +20,7 @@ const handleFetchBookmarks = async (req, res) => {
 			[userId]
 		);
 
-		res.json(response);
+		res.json(response.rows);
 	} catch (e) {
 		res.status(400).json(e);
 	}
@@ -44,7 +44,7 @@ const handleAddBookmark = async (req, res) => {
 			[userId]
 		);
 
-		res.json(response);
+		res.json(response.rows);
 	} catch (e) {
 		res.status(400).json(e);
 	}
