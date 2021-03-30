@@ -16,7 +16,7 @@ const handleFetchBookmarks = async (req, res) => {
 
 	try {
 		const response = await pool.query(
-			"SELECT * FROM bookmarks WHERE userId = $1;",
+			"SELECT * FROM bookmarks WHERE userId = $1 ORDER BY bookmarkTime DESC;",
 			[userId]
 		);
 
@@ -40,7 +40,30 @@ const handleAddBookmark = async (req, res) => {
 		);
 
 		const response = await pool.query(
-			"SELECT * FROM bookmarks WHERE userId = $1;",
+			"SELECT * FROM bookmarks WHERE userId = $1 ORDER BY bookmarkTime DESC;",
+			[userId]
+		);
+
+		res.json(response.rows);
+	} catch (e) {
+		res.status(400).json(e);
+	}
+};
+
+const handleDeleteBookmark = async (req, res) => {
+	const { userId, bookmarkId } = req.body;
+
+	if (!bookmarkId) {
+		return res.status(400).json("Missing required information");
+	}
+
+	try {
+		await pool.query("DELETE FROM bookmarks WHERE bookmarkId = $1;", [
+			bookmarkId,
+		]);
+
+		const response = await pool.query(
+			"SELECT * FROM bookmarks WHERE userId = $1 ORDER BY bookmarkTime DESC;",
 			[userId]
 		);
 
@@ -52,5 +75,6 @@ const handleAddBookmark = async (req, res) => {
 
 module.exports = {
 	handleAddBookmark,
+	handleDeleteBookmark,
 	handleFetchBookmarks,
 };

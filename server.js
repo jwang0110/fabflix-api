@@ -38,6 +38,10 @@ app.post("/bookmarks/add", async (req, res) => {
 	bookmarks.handleAddBookmark(req, res);
 });
 
+app.post("/bookmarks/delete", async (req, res) => {
+	bookmarks.handleDeleteBookmark(req, res);
+});
+
 app.post("/bookmarks/fetch", async (req, res) => {
 	bookmarks.handleFetchBookmarks(req, res);
 });
