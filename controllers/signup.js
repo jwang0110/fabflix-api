@@ -1,4 +1,6 @@
 const { Client } = require("pg");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const handleSignUp = async (req, res) => {
 	const { name, email, password } = req.body;
@@ -17,10 +19,12 @@ const handleSignUp = async (req, res) => {
 
 		client.connect();
 
+		const passwordHash = await bcrypt.hash(password, saltRounds);
+
 		const response = await client.query("CALL addUser($1, $2, $3, $4);", [
 			name,
 			email,
-			password,
+			passwordHash,
 			new Date(),
 		]);
 		await client.end();

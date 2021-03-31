@@ -1,4 +1,10 @@
 const { Client } = require("pg");
+const bcrypt = require("bcrypt");
+
+const failMessage = {
+	status: "failed",
+	message: "Invalid user credentials",
+};
 
 const handleSignIn = async (req, res) => {
 	const { email, password } = req.body;
@@ -24,36 +30,25 @@ const handleSignIn = async (req, res) => {
 
 		await client.end();
 
-		if (response?.rows?.[0]) {
-			const {
-				userid: id,
-				name,
-				email: dbEmail,
-				password: dbPassword,
-				joined,
-			} = response.rows[0];
+		if (!response?.rows?.[0]) {
+			return res.status(400).json(failMessage);
+		}
 
-			if (email === dbEmail && password === dbPassword) {
-				return res.json({
-					status: "succeeded",
-					user: {
-						id,
-						name,
-						email: dbEmail,
-						joined,
-					},
-				});
-			} else {
-				return res.status(400).json({
-					status: "failed",
-					message: "Invalid user credentials",
-				});
-			}
-		} else {
-			return res.status(400).json({
-				status: "failed",
-				message: "Invalid user credentials",
+		const user = response.rows[0];
+		const match = await bcrypt.compare(password, user.passwordhash);
+
+		if (match) {
+			return res.json({
+				status: "succeeded",
+				user: {
+					id: user.userid,
+					name: user.name,
+					email: user.email,
+					joined: user.joined,
+				},
 			});
+		} else {
+			return res.status(400).json(failMessage);
 		}
 	} catch (e) {
 		res.status(400).json(e);
